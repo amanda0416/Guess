@@ -5,21 +5,34 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+
+    int secret = new Random().nextInt(10) + 1;
+    private EditText edNumber;
+    private TextView message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("MainActivity", "secert" + secret);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        edNumber = findViewById(R.id.num);
+        message = findViewById(R.id.message);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -29,6 +42,19 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    public void guess(View view) {
+        int number = Integer.parseInt(edNumber.getText().toString());
+        if (number < secret) {
+            //message.setText("Bigger");
+            new AlertDialog.Builder(this).setTitle("Result").setMessage("Bigger").setPositiveButton("OK", null).show();
+        } else if (number > secret) {
+            //message.setText("Smaller");
+            new AlertDialog.Builder(this).setTitle("Result").setMessage("Smaller").setPositiveButton("OK", null).show();
+        } else {
+            message.setText("Bingo, the secret number is : " + secret);
+        }
     }
 
     @Override
